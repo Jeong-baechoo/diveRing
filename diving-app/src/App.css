@@ -1,0 +1,59 @@
+/* App.css */
+
+.App {
+  text-align: center;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #f1f1f1;
+  position: sticky;
+  top: 0;
+  z-index: 100; /* 필요에 따라 z-index를 조정하세요 */
+  
+}
+
+.logo a {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  padding-left: 30px;
+}
+
+.nav-section {
+  display: flex;
+  gap: 10px; /* 각 요소간의 간격을 설정합니다 */
+  padding-right: 50px;
+}
+
+body {
+  background-color: #0099cc; /* 파란색 코드 */
+}
+h1 {
+  color: #ffffff; /* 흰색 코드 */
+}
+.image-container {
+  position: relative;
+}
+
+.ocean-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.image-container h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: white;
+  text-align: center;
+  /* 기타 스타일 속성들 */
+}
