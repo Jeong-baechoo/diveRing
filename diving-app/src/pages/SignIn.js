@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,16 +13,27 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Header } from '../components/Header';
-import Dashboard from './Dashboard';
+import { useDispatch, useSelector } from "react-redux";
+import { Logined} from '../features/Auth/authSlice';
+import { userInfo } from '../features/User/userSlice';
 
 function SignIn() {
-  const navigation = useNavigate();
-  const [auth, setauth] = useState(false);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.islogin);
+  const userid = useSelector((state) => state.user.userID);
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if(auth){
+      navigate("/userpage");
+    }
+  }, [auth])
+  
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -36,14 +47,14 @@ function SignIn() {
     e.preventDefault();
 
     const formData = { email, password };
-
+    
     axios.post('http://localhost:4000/signin', formData)
       .then(response => {
         console.log(response.data); // 서버로부터 받은 응답 데이터 출력
         axios.get('http://localhost:4000/user')
         .then(response => { //인증된 사용자일 경우
-          console.log(response.data.email); //
-          setauth(true);
+          dispatch(userInfo(response.data));
+          dispatch(Logined());
         })
       })
       .catch(error => {
@@ -53,8 +64,7 @@ function SignIn() {
 
   return (
     <ThemeProvider theme={createTheme()}>
-      {auth && <Navigate to="/dashboard"  />}
-      <Header />
+      <Header/>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

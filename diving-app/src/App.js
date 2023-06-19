@@ -7,7 +7,7 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Spot from './pages/Spot';
 import './App.css';
-import Dashboard from './pages/Dashboard';
+import Userpage from './pages/UserPage';
 
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/mylog" element={<Mylog />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/userpage' element={<Userpage />} />
         </Routes>
     </div>
   );

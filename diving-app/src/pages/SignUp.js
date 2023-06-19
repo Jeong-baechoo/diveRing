@@ -13,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Header } from '../components/Header';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { Logined} from '../features/Auth/authSlice';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -32,13 +36,28 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userData = {
+      firstName : data.get('firstName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    console.log(userData);
+    axios.post('http://localhost:4000/signup',userData).then(response =>{
+      navigate("/");
+      dispatch(Logined());
+      console.log("회원가입 성공");
+    }
+    ).catch(error => {
+      if(error.response.status == "409"){
+        console.log("중복된 이메일");
+      }
+    })
   };
 
   return (

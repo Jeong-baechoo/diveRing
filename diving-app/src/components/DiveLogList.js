@@ -1,24 +1,89 @@
 import React from 'react';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+
+const columns = [
+  { id: 'location', label: '장소', minWidth: 170 },
+  { id: 'date', label: '날짜', minWidth: 170 },
+  { id: 'depth', label: '깊이', minWidth: 100 },
+  { id: 'duration', label: '수중 체류 시간', minWidth: 170 },
+];
 
 const DiveLogList = ({ diveLogs }) => {
   return (
     <div className="dive-log-list">
-      {diveLogs.length > 0 ? (
-        <ul>
-          {diveLogs.map((diveLog) => (
-            <li key={diveLog.id}>
-              <div>장소: {diveLog.location}</div>
-              <div>날짜: {diveLog.date}</div>
-              <div>깊이: {diveLog.depth}</div>
-              <div>수중 체류 시간: {diveLog.duration}</div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>다이빙 기록이 없습니다.</p>
-      )}
+      <StickyHeadTable rows={diveLogs} columns={columns} />
     </div>
   );
 };
 
 export default DiveLogList;
+
+function StickyHeadTable({ rows, columns }) {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  return (
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align="center"
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align="center">
+                          {value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
+  );
+}
