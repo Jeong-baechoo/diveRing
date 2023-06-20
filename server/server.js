@@ -16,6 +16,7 @@ const diveLogs = [
     date: '2023-06-01',
     depth: 15,
     duration: 40,
+    userid: 1
   },
   {
     id: 2,
@@ -23,6 +24,7 @@ const diveLogs = [
     date: '2023-06-02',
     depth: 20,
     duration: 50,
+    userid: 1
   },
 ];
 
