@@ -1,3 +1,5 @@
+//20191064 정용환 store.js
+
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import authReducer from '../features/Auth/authSlice';

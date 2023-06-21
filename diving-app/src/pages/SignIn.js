@@ -1,3 +1,4 @@
+// 20191064 정용환 Singin.js
 import * as React from 'react';
 import { useState, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -21,17 +22,17 @@ import { Logined} from '../features/Auth/authSlice';
 import { userInfo } from '../features/User/userSlice';
 
 function SignIn() {
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth.islogin);
+  const dispatch = useDispatch(); 
+  const auth = useSelector((state) => state.auth.islogin); //리덕스 스토어에서 state를 불러옴
   const userid = useSelector((state) => state.user.userID);
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(''); // useState 훅을 통해서 state를 초기화
+  const [password, setPassword] = useState(''); 
   const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
     if(auth){
-      navigate("/userpage");
+      navigate("/"); //auth의 상태가 ture로 바뀔경우 로그인에 성공한 것으로 간주하여 메인페이지로 리다이렉션
     }
   }, [auth])
   
@@ -49,12 +50,12 @@ function SignIn() {
    
     const formData = { email, password };
     
-    axios.post('http://localhost:4000/signin', formData)
+    axios.post('http://localhost:4000/signin', formData) //유저의 로그인 데이터를 서버로 post
       .then(response => {
         console.log(response.data); // 서버로부터 받은 응답 데이터 출력
-        axios.get('http://localhost:4000/user')
-        .then(response => { //인증된 사용자일 경우
-          dispatch(userInfo(response.data));
+        axios.get('http://localhost:4000/user') 
+        .then(response => { //인증에 성공한 경우
+          dispatch(userInfo(response.data)); //리덕스의 디스패치를 이용하여 유저의 데이터를 전역에서 관리
           dispatch(Logined());
         })
       })
@@ -126,7 +127,7 @@ function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

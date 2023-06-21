@@ -1,3 +1,4 @@
+//학번 20191064 이름 정용환 Mylog.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Backdrop from '@mui/material/Backdrop';
@@ -5,7 +6,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { Header } from '../components/Header';
 import DiveLogList from '../components/DiveLogList';
 import DiveLogForm from '../components/DiveLogForm';
@@ -23,21 +23,21 @@ const DiveLog = () => {
 
   const fetchDiveLogs = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/dive-logs', {
+      const response = await axios.get('http://localhost:4000/dive-logs', { // 다이빙 로그 요청
   params: {
     userId: userId
   }
 });
-      dispatch(getlogs(response.data)); // 서버에서 다이브로그 가져와서 상태에
+      dispatch(getlogs(response.data)); // 서버에서 다이브로그 가져와서 상태에 저장
       setDiveLogs(response.data);
     } catch (error) {
       console.error('Error fetching dive logs:', error);
     }
   };
 
-  const handleSaveDiveLog = async (newDiveLog) => {
+  const handleSaveDiveLog = async (newDiveLog) => { // 새로운 다이빙 로그를 저장하는 함수
     try {
-      const response = await axios.post('http://localhost:4000/dive-logs', newDiveLog);
+      const response = await axios.post('http://localhost:4000/dive-logs', newDiveLog); 
       if (response.status === 201) {
         dispatch(getlogs(response.data));
         setDiveLogs([...diveLogs, response.data]);
@@ -52,8 +52,10 @@ const DiveLog = () => {
   return (
     <div>
       <Header />
-      <TransitionsModal onSaveDiveLog={handleSaveDiveLog}/>
-      <DiveLogList props={diveLogs} />
+      {/* 모달 창에 입력받는 폼을 작성하기 위한 컴포넌트 */}
+      <TransitionsModal onSaveDiveLog={handleSaveDiveLog}/> 
+      {/* react의 장점을 활용하기 위해서 다이빙 리스트는 컴포넌트로 만들어 props로 다이빙 기록을 전달 */}
+      <DiveLogList props={diveLogs} /> 
     </div>
   );
 };
@@ -96,6 +98,7 @@ function TransitionsModal({ onSaveDiveLog }) {
       >
         <Fade in={open}>
           <Box sx={style}>
+            {/* 모달 창안에 다이빙 기록을 위한 form 컴포넌트를 만듬 */}
             <DiveLogForm onSaveDiveLog={onSaveDiveLog} />
           </Box>
         </Fade>

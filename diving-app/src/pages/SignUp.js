@@ -1,10 +1,10 @@
+// 20191064 정용환 SignUp.js
+
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -32,8 +32,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
@@ -49,14 +47,14 @@ export default function SignUp() {
       password: data.get('password'),
     };
     console.log(userData);
-    axios.post('http://localhost:4000/signup',userData).then(response =>{
-      dispatch(Logined());
-      dispatch(userInfo(response.data));
-      navigate("/");
+    axios.post('http://localhost:4000/signup',userData).then(response =>{ //axios를 통해 서버로 회원가입 정보를 넘김
+      dispatch(Logined()); 
+      dispatch(userInfo(response.data)); //리덕스를 통해서 유저의 정보를 전역에서 상태관리
+      navigate("/"); //회원가입에 성공하면 로그인한 상태로 메인페이지로 넘어감
       console.log("회원가입 성공");
     }
     ).catch(error => {
-      if(error.response.status == "409"){
+      if(error.response.status == "409"){ //에러처리
         console.log("중복된 이메일");
       }
     })
@@ -111,12 +109,6 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>

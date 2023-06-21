@@ -1,3 +1,5 @@
+// 201910
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -10,7 +12,7 @@ app.use(bodyParser.json());
 const diveLogs = [
   {
     id: 1,
-    location: '다이빙 장소 1',
+    location: 'Great Barrier Reef, Australia',
     date: '2023-06-01',
     depth: '15',
     duration: '40',
@@ -18,13 +20,62 @@ const diveLogs = [
   },
   {
     id: 2,
-    location: '다이빙 장소 2',
+    location: 'Blue Hole, Belize',
     date: '2023-06-02',
     depth: '20',
     duration: '50',
     userid: 1,
   },
+  {
+    id: 3,
+    location: 'Barracuda Point, Sipadan Island',
+    date: '2023-06-03',
+    depth: '25',
+    duration: '45',
+    userid: 1,
+  },
+  {
+    id: 4,
+    location: 'Shark Alley, South Africa',
+    date: '2023-06-04',
+    depth: '18',
+    duration: '55',
+    userid: 1,
+  },
+  {
+    id: 5,
+    location: 'Blue Corner, Palau',
+    date: '2023-06-05',
+    depth: '22',
+    duration: '60',
+    userid: 1,
+  },
+  {
+    id: 6,
+    location: 'Tubbataha Reefs Natural Park, Philippines',
+    date: '2023-06-06',
+    depth: '30',
+    duration: '75',
+    userid: 1,
+  },
+  {
+    id: 7,
+    location: 'The Great Blue Hole, Belize',
+    date: '2023-06-07',
+    depth: '24',
+    duration: '55',
+    userid: 1,
+  },
+  {
+    id: 8,
+    location: 'SS Thistlegorm, Red Sea, Egypt',
+    date: '2023-06-08',
+    depth: '28',
+    duration: '70',
+    userid: 1,
+  },
 ];
+
 
 // GET /dive-logs 요청 처리
 app.get('/dive-logs', (req, res) => {
