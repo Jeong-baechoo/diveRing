@@ -1,5 +1,3 @@
-// server.js (Node.js with Express.js)
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -14,29 +12,33 @@ const diveLogs = [
     id: 1,
     location: '다이빙 장소 1',
     date: '2023-06-01',
-    depth: 15,
-    duration: 40,
-    userid: 1
+    depth: '15',
+    duration: '40',
+    userid: 1,
   },
   {
     id: 2,
     location: '다이빙 장소 2',
     date: '2023-06-02',
-    depth: 20,
-    duration: 50,
-    userid: 1
+    depth: '20',
+    duration: '50',
+    userid: 1,
   },
 ];
 
 // GET /dive-logs 요청 처리
 app.get('/dive-logs', (req, res) => {
-  res.json(diveLogs);
+  const { userId } = req.query;
+  console.log(diveLogs[0].userid);
+  // 클라이언트의 아이디와 일치하는 기록 필터링
+  const userLogs = diveLogs.filter((log) => log.userid === parseInt(userId));
+  res.json(userLogs); // 필터링된 기록을 응답으로 보냄
 });
+
 
 // POST /dive-logs 요청 처리
 app.post('/dive-logs', (req, res) => {
-  const { location, date, depth, duration } = req.body;
-
+  const { location, date, depth, duration, userid} = req.body;
   // 새로운 다이빙 로그 생성
   const newDiveLog = {
     id: diveLogs.length + 1,
@@ -44,6 +46,7 @@ app.post('/dive-logs', (req, res) => {
     date,
     depth,
     duration,
+    userid
   };
 
   // 다이빙 로그 추가
@@ -76,7 +79,7 @@ app.post('/signup', (req, res) => {
     console.log(user);
   })
   // 회원가입 성공
-  return res.status(201).json({ message: 'Signup successful' });
+  return res.status(201).json(newUser);
 });
 
 const users = [

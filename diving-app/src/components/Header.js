@@ -1,16 +1,19 @@
+import { duration } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import {Logouted} from '../features/Auth/authSlice';
+import { initinfo } from '../features/User/userSlice';
 export function Header() {
   const dispath = useDispatch();
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth.islogin);
+
   const handleLogout = () => {
     dispath(Logouted());
+    dispath(initinfo());
     navigate("/");
   };
-  {console.log(auth)}
   return (
     <header>
       <div className="logo">

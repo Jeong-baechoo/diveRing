@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    userinfo : null,
+    userinfo : {id: null,name: null,email: null,password: null},
     divelog : [],
 }
 
@@ -14,10 +14,14 @@ const userSlice = createSlice({
     },
     getlogs: (state,action) => {
         state.divelog = action.payload;
+    },
+    initinfo: (state) =>{
+        state.userinfo = {id: null,name: null,email: null,password: null};
+        state.divelog = [];
     }
   }
 });
 
-export const { userInfo} = userSlice.actions
+export const { userInfo, getlogs,initinfo} = userSlice.actions
 
 export default userSlice.reducer

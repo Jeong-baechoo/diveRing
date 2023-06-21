@@ -27,6 +27,7 @@ function SignIn() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
     if(auth){
@@ -45,7 +46,7 @@ function SignIn() {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-
+   
     const formData = { email, password };
     
     axios.post('http://localhost:4000/signin', formData)
@@ -61,7 +62,7 @@ function SignIn() {
         console.error(error);
       });
   };
-
+  
   return (
     <ThemeProvider theme={createTheme()}>
       <Header/>

@@ -9,17 +9,26 @@ import Typography from '@mui/material/Typography';
 import { Header } from '../components/Header';
 import DiveLogList from '../components/DiveLogList';
 import DiveLogForm from '../components/DiveLogForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getlogs } from '../features/User/userSlice';
 
 const DiveLog = () => {
   const [diveLogs, setDiveLogs] = useState([]);
-  
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.userinfo.id);
+  const divelog = useSelector((state) => state.user.divelog);
   useEffect(() => {
     fetchDiveLogs();
   }, []);
 
   const fetchDiveLogs = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/dive-logs');
+      const response = await axios.get('http://localhost:4000/dive-logs', {
+  params: {
+    userId: userId
+  }
+});
+      dispatch(getlogs(response.data)); // 서버에서 다이브로그 가져와서 상태에
       setDiveLogs(response.data);
     } catch (error) {
       console.error('Error fetching dive logs:', error);
@@ -30,6 +39,7 @@ const DiveLog = () => {
     try {
       const response = await axios.post('http://localhost:4000/dive-logs', newDiveLog);
       if (response.status === 201) {
+        dispatch(getlogs(response.data));
         setDiveLogs([...diveLogs, response.data]);
       } else {
         console.error('Error saving dive log:', response.data);
@@ -42,12 +52,8 @@ const DiveLog = () => {
   return (
     <div>
       <Header />
-      <TransitionsModal />
-      <DiveLogList diveLogs={diveLogs} />
-      <div className="dive-log-form">
-        <h2>다이빙 로그 작성</h2>
-        <DiveLogForm onSaveDiveLog={handleSaveDiveLog} />
-      </div>
+      <TransitionsModal onSaveDiveLog={handleSaveDiveLog}/>
+      <DiveLogList props={diveLogs} />
     </div>
   );
 };
@@ -66,14 +72,15 @@ const style = {
   p: 4,
 };
 
-function TransitionsModal() {
+function TransitionsModal({ onSaveDiveLog }) {
+  console.log(onSaveDiveLog);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>다이빙 기록</Button>
+      <Button onClick={handleOpen} variant="contained" size="large">다이빙 기록</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -89,12 +96,7 @@ function TransitionsModal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <DiveLogForm onSaveDiveLog={onSaveDiveLog} />
           </Box>
         </Fade>
       </Modal>

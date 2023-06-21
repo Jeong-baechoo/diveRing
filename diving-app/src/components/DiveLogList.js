@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { useSelector } from 'react-redux';
 
 const columns = [
   { id: 'location', label: '장소', minWidth: 170 },
@@ -15,19 +16,12 @@ const columns = [
   { id: 'duration', label: '수중 체류 시간', minWidth: 170 },
 ];
 
-const DiveLogList = ({ diveLogs }) => {
-  return (
-    <div className="dive-log-list">
-      <StickyHeadTable rows={diveLogs} columns={columns} />
-    </div>
-  );
-};
 
-export default DiveLogList;
-
-function StickyHeadTable({ rows, columns }) {
+export default function DiveLogList({props}) {
+  const logs = useSelector(state => state.user.divelog)
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const rows = props;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -58,20 +52,18 @@ function StickyHeadTable({ rows, columns }) {
           <TableBody>
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align="center">
-                          {value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+              .map((row, index) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell key={column.id} align="center">
+                        {value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

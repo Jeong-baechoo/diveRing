@@ -16,6 +16,7 @@ import { Header } from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { Logined} from '../features/Auth/authSlice';
+import { userInfo } from '../features/User/userSlice';
 import axios from 'axios';
 
 function Copyright(props) {
@@ -43,14 +44,15 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
-      firstName : data.get('firstName'),
+      name : data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
     };
     console.log(userData);
     axios.post('http://localhost:4000/signup',userData).then(response =>{
-      navigate("/");
       dispatch(Logined());
+      dispatch(userInfo(response.data));
+      navigate("/");
       console.log("회원가입 성공");
     }
     ).catch(error => {
@@ -81,25 +83,13 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id="name"
+                  label="Name"
+                  name="name"
                 />
               </Grid>
               <Grid item xs={12}>
